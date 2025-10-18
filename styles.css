@@ -17,6 +17,7 @@ header .container{display:flex;align-items:center;justify-content:space-between;
 .nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;font-weight:700}
 .nav a:hover{color:var(--bg);background:linear-gradient(90deg,var(--accent),var(--accent-2))}
 .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071019;padding:10px 14px;border-radius:10px;font-weight:800;text-decoration:none; border:none; outline:none}
+.cta.topmargin{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071019;padding:10px 14px;border-radius:10px;font-weight:800;text-decoration:none; border:none; outline:none;display:inline-block;margin-top:10px}
 .cta.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
 
 /* hero */
