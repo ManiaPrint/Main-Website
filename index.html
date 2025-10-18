@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mania Print — 3D Printing Studio</title>
+  <meta name="description" content="Mania Print — professional 3D printing services: prototyping, small-batch production, repairs, finishing and custom design." />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="#">Mania Print</a>
+      <nav class="nav" id="nav">
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="cta" href="#get-quote">Get a Quote</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Mania Print — 3D printing that turns imagination to reality</h1>
+        <p class="lead">Fast prototyping, high-detail miniatures, functional parts and small-batch production. We handle design checks, print, post-processing and finishing — so you get parts that actually work.</p>
+
+        <div class="kpis">
+          <div class="kpi card"><b>48h</b><span class="small">Typical prototype turnaround</span></div>
+          <div class="kpi card"><b>Infinite</b><span class="small">Possible designs and prints</span></div>
+          <div class="kpi card"><b>99%</b><span class="small">First-print success</span></div>
+        </div>
+
+        <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+          <a class="cta" href="#get-quote">Request a quote</a>
+          <a class="cta ghost" href="#gallery">View samples</a>
+        </div>
+      </div>
+
+      <aside class="card">
+        <h3>Quick order</h3>
+        <p class="note">Upload an STL/OBJ and we’ll respond with a printability check & estimate. No account required.</p>
+        <form id="uploadForm" class="fieldset" enctype="multipart/form-data">
+          <label class="note">Your email</label>
+          <input id="uploadEmail" name="email" type="email" placeholder="you@example.com" required />
+          <label class="note">Material</label>
+          <select id="uploadMaterial" name="material">
+            <option>PLA — prototyping (economical)</option>
+            <option>PETG — stronger & weatherproof</option>
+            <option>ABS — heat resistant</option>
+            <option>Resin — high-detail miniatures</option>
+            <option>TPU — flexible</option>
+          </select>
+          <label class="note">Upload file (STL/OBJ)</label>
+          <input id="uploadFile" name="file" type="file" accept=".stl,.obj" />
+          <small class="note">Files uploaded via browser are sent to the server endpoint you configure. See README for server API.</small>
+          <button class="cta" id="uploadSubmit">Send request</button>
+
+          <div id="uploadProgress" class="note" style="display:none;margin-top:8px">Uploading... <span id="uploadPercent">0%</span></div>
+        </form>
+      </aside>
+    </section>
+
+    <section id="services">
+      <h2>Services</h2>
+      <div class="services">
+        <div class="service card">
+          <h3>Rapid Prototyping</h3>
+          <p>Fast-turn, iterative printing for product development — low cost, high feedback speed.</p>
+        </div>
+        <div class="service card">
+          <h3>High-detail Resin</h3>
+          <p>Cast-quality miniatures, jewellery patterns and models with smooth surfaces and fine features.</p>
+        </div>
+        <div class="service card">
+          <h3>Functional Parts</h3>
+          <p>Load-bearing and fit-critical parts using engineering-grade materials and tuned print settings.</p>
+        </div>
+        <div class="service card">
+          <h3>Finishing & Assembly</h3>
+          <p>Sanding, priming, painting, solvent smoothing, epoxy coating and assembled sub-assemblies delivered ready to use.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <h2>Standard Prints</h2>
+      <p class="note">Our own print bundles you might like — from us</p>
+      <div class="gallery">
+        <div class="photo">1st Product</div>
+        <div class="photo">2nd Product</div>
+        <div class="photo">3rd Product</div>
+        <div class="photo">4th Product</div>
+      </div>
+    </section>
+
+    <section id="pricing" class="split">
+      <div>
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="step card">
+            <div class="num">1</div>
+            <div>
+              <strong>Upload</strong>
+              <div class="small">Send STL/ZIP with instructions. We check printability in 24 hours.</div>
+            </div>
+          </div>
+
+          <div class="step card">
+            <div class="num">2</div>
+            <div>
+              <strong>Estimate</strong>
+              <div class="small">We quote material, time and finish options. You approve and pay.</div>
+            </div>
+          </div>
+
+          <div class="step card">
+            <div class="num">3</div>
+            <div>
+              <strong>Print & finish</strong>
+              <div class="small">We print, test-fit and apply requested post-processing.</div>
+            </div>
+          </div>
+
+          <div class="step card">
+            <div class="num">4</div>
+            <div>
+              <strong>Ship or pickup</strong>
+              <div class="small">Local pickup or flat-rate shipping. Bulk orders and regular partners available.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <h2>Pricing (starter)</h2>
+        <div class="pricing">
+          <div class="price card">
+            <h4>Prototype</h4>
+            <div class="small">From $8 — small PLA parts, minimal finish.</div>
+            <div class="small">Volume-based discounts available.</div>
+            <a class="cta-small" href="#get-quote">Estimate</a>
+          </div>
+
+          <div class="price card">
+            <h4>Detail Resin</h4>
+            <div class="small">From $25 — high-res resin prints, post-wash & cure.</div>
+            <a class="cta-small" href="#get-quote">Estimate</a>
+          </div>
+
+          <div class="price card">
+            <h4>Functional</h4>
+            <div class="small">From $18 — PETG/ABS prints, strength-tuned infill & shell.</div>
+            <a class="cta-small" href="#get-quote">Estimate</a>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="card">
+          <strong>Bulk & subscription</strong>
+          <p class="small">Repeat orders and monthly partner pricing for designers and small manufacturers. Contact us for SLAs.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details><summary>What file types do you accept?</summary><div class="small">STL and OBJ preferred; ZIP multiple files. Please include desired orientation and tolerances.</div></details>
+      <details><summary>How do you handle dimensional accuracy?</summary><div class="small">We print test coupons and calibrate per material. Typical dimensional tolerance ±0.2mm for small features (depends on geometry).</div></details>
+      <details><summary>Do you offer design help?</summary><div class="small">Yes — basic DFM checks and minor tweaks included in the estimate. Full redesign work charged separately.</div></details>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="card">
+        <h2>Contact & quote</h2>
+        <p class="note">Email mania_print@outlook.com or use the quick order above. For urgent jobs call +61 493 827 550 (demo).</p>
+        <p class="note"><strong>Location:</strong> Brisbane, QLD — local pickup available.</p>
+        <p class="note">Follow us: Instagram @maniaprint | LinkedIn Mania Print</p>
+      </div>
+
+      <aside class="card">
+        <h3>Send a message</h3>
+        <form id="contactForm" class="fieldset">
+          <input id="name" name="name" placeholder="Your name" required />
+          <input id="contactEmail" name="email" type="email" placeholder="you@example.com" required />
+          <input id="subject" name="subject" placeholder="Subject (e.g. Quote for 3 parts)" />
+          <textarea id="message" name="message" rows="5" placeholder="Give a short description: material, color, finish, quantity"></textarea>
+          <button class="cta">Send</button>
+        </form>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="small">© Mania Print — made with filament & cookies 🍪</div>
+      <div class="small">Terms • Privacy</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

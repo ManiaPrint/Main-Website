@@ -1,0 +1,72 @@
+/* Mania Print — styles.css (copied from single-file layout) */
+:root{
+  --bg:#0b0f15; --panel:#0f1419; --muted:#97a6b9; --text:#e6eef6;
+  --accent:#46E0EA; --accent-2:#0D203D; --glass: rgba(255,255,255,0.03);
+  --radius:14px; --maxw:1200px; --pad:20px; --transition:200ms ease;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:#0b0f15;color:var(--text);-webkit-font-smoothing:antialiased}
+.container{max-width:var(--maxw);margin:0 auto;padding:32px var(--pad)}
+
+/* header */
+header.site-header{position:sticky;top:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);z-index:50}
+header .container{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:800;letter-spacing:-0.02em;color:var(--text);text-decoration:none;font-size:1.05rem}
+.nav{display:flex;gap:14px}
+.nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;font-weight:700}
+.nav a:hover{color:var(--bg);background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071019;padding:10px 14px;border-radius:10px;font-weight:800;text-decoration:none; border:none; outline:none}
+.cta.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+/* hero */
+.hero{margin:26px 0;padding:36px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
+.hero h1{margin:0;font-size:2.1rem;letter-spacing:-0.02em}
+.hero p.lead{color:var(--muted);margin:10px 0 0;font-size:1.02rem}
+.hero .kpis{display:flex;gap:12px;margin-top:18px}
+.kpi{background:var(--glass);padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);min-width:120px;text-align:center}
+.kpi b{display:block;font-size:1.1rem}
+
+/* card */
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03)}
+
+/* services */
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+.service h3{margin:0 0 8px 0}
+.service p{margin:0;color:var(--muted)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:14px}
+.photo{border-radius:10px;min-height:120px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+
+/* process + pricing */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.steps{display:flex;flex-direction:column;gap:12px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step .num{background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:8px 12px;border-radius:10px;color:#071019;font-weight:800}
+
+.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.price{padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.02)}
+.price h4{margin:0 0 8px 0}
+.price .cta-small{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:10px;font-weight:800;text-decoration:none;background:transparent;border:1px solid rgba(255,255,255,0.04)}
+
+/* faq */
+.faq{margin-top:18px}
+.faq details{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);margin-bottom:8px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+form.fieldset{display:flex;flex-direction:column;gap:10px}
+input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:8px;color:var(--text);outline:none; resize:none}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+.note{color:var(--muted);font-size:0.95rem}
+
+/* footer */
+footer{margin-top:28px;padding:22px 0;border-top:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+
+/* small screens */
+@media (max-width:920px){
+  .hero{grid-template-columns:1fr;}
+  .contact{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+}
