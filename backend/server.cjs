@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.OUTLOOK_USER,
-    pass: process.env.OUTLOOK_PASS
+    user: process.env.mania_print@outlook.com,
+    pass: process.env.dbeovpfjclgojohm
   }
 });
 
