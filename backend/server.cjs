@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 }
 
 
-// contact form endpoint
+// contact form eedpoint
 app.post("/send-email", async (req, res) => {
   try {
     const { from_name, reply_to, subject, message, material } = req.body;
