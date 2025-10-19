@@ -1,7 +1,7 @@
 // site-script.js
 // Handles both forms + sends to your Node /send-email endpoint
 
-const API_URL = "https://mania-print-backend.onrender.com";
+const API_URL = "https://mania-print-backend.onrender.com/send-email";
 
 (function () {
   const uploadForm = document.getElementById("uploadForm");
