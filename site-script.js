@@ -1,7 +1,7 @@
 // site-script.js
 // Handles both forms + sends to your Node /send-email endpoint
 
-const API_URL = "http://localhost:3001/mania_print@outlook.com"; // change to your deployed URL later
+const API_URL = "https://mania-print-backend.onrender.com";
 
 (function () {
   const uploadForm = document.getElementById("uploadForm");

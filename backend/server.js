@@ -13,10 +13,10 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: "mania_print@outlook.com",
-    pass: "Maniaprint.secret123" // not your normal password — generate an app password
-  }
-});
+  user: process.env.OUTLOOK_USER,
+  pass: process.env.OUTLOOK_PASS
+}
+
 
 // contact form endpoint
 app.post("/send-email", async (req, res) => {
@@ -41,5 +41,5 @@ ${message}`
     res.status(500).json({ success: false, error: "Failed to send email" });
   }
 });
-
+app.use(cors({ origin: "*" }));
 app.listen(3001, () => console.log("Server running on http://localhost:3001"));
