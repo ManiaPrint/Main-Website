@@ -13,10 +13,12 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.mania_print@outlook.com,
-    pass: process.env.dbeovpfjclgojohm
-  }
+    user: process.env.OUTLOOK_USER,
+    pass: process.env.OUTLOOK_PASS
+  },
+  tls: { ciphers: "SSLv3" }
 });
+
 
 // contact form endpoint
 app.post("/send-email", async (req, res) => {
