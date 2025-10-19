@@ -1,0 +1,26 @@
+[
+  {
+    "id": "prod-001",
+    "title": "Miniature Hero (Resin)",
+    "desc": "High-detail 75mm resin miniature, primed and ready for painting.",
+    "price": 45.00,
+    "tags": ["resin","miniature","paint-ready"],
+    "img": "images/mini-hero.jpg"
+  },
+  {
+    "id": "prod-002",
+    "title": "Custom Bracket (PLA)",
+    "desc": "Small functional PLA bracket printed with reinforced infill. Mounting holes included.",
+    "price": 12.50,
+    "tags": ["PLA","functional","bracket"],
+    "img": "images/bracket.jpg"
+  },
+  {
+    "id": "prod-003",
+    "title": "Replacement Gear (PETG)",
+    "desc": "Durable PETG gear for small mechanisms. Specify teeth count in order notes.",
+    "price": 8.00,
+    "tags": ["PETG","functional","gear"],
+    "img": "images/gear.jpg"
+  }
+]

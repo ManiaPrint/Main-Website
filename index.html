@@ -10,12 +10,13 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="logo" href="#">Mania Print</a>
+      <a class="logo" href="index.html">Mania Print</a>
       <nav class="nav" id="nav">
         <a href="#services">Services</a>
         <a href="#gallery">Gallery</a>
         <a href="#pricing">Pricing</a>
         <a href="#contact">Contact</a>
+        <a href="products/index.html" class="nav">Products</a>
       </nav>
       <a class="cta" href="#get-quote">Get a Quote</a>
     </div>
@@ -35,26 +36,38 @@
 
         <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap">
           <a class="cta" href="#get-quote">Request a quote</a>
-          <a class="cta ghost" href="#gallery">View samples</a>
+          <!-- replaced 'View samples' -> Products -->
+          <a class="cta ghost" href="products/index.html">Products</a>
         </div>
       </div>
 
       <aside class="card">
         <h3>Quick order</h3>
         <p class="note">Upload a file and we’ll respond with a printability check & estimate. No account required.</p>
-        <form id="uploadForm" class="fieldset" enctype="multipart/form-data">
-          <label class="note">Your email</label>
-          <input id="uploadEmail" name="email" type="email" placeholder="you@example.com" required />
-          <label class="note">Material</label>
-          <select id="uploadMaterial" name="material">
-            <option>PLA?
-          </select>
-          <label class="note">Upload file</label>
-          <input id="uploadFile" name="file" type="file" accept=".stl,.obj" />
-          <small class="note">Files uploaded via browser are sent to the server endpoint you configure. See README for server API.</small>
-          <button class="cta" id="uploadSubmit">Send request</button>
 
-          <div id="uploadProgress" class="note" style="display:none;margin-top:8px">Uploading... <span id="uploadPercent">0%</span></div>
+        <!-- quick order: file upload -> EmailJS sendForm -->
+        <form id="uploadForm" class="fieldset" enctype="multipart/form-data">
+          <label class="note">Your name</label>
+          <input id="uploadName" name="from_name" placeholder="Your name" required />
+
+          <label class="note">Your email</label>
+          <input id="uploadEmail" name="reply_to" type="email" placeholder="you@example.com" required />
+
+          <label class="note">Material</label>
+          <select id="uploadMaterial" name="material" required>
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="ABS">ABS</option>
+            <option value="Resin">Resin</option>
+          </select>
+
+          <label class="note">Upload file</label>
+          <input id="uploadFile" name="file" type="file" accept=".stl,.obj,.step,.stp,.3mf" />
+
+          <small class="note">Files uploaded via browser are sent directly via EmailJS to our inbox.</small>
+          <button class="cta" id="uploadSubmit" type="submit">Send request</button>
+
+          <div id="uploadProgress" class="note" style="display:none;margin-top:8px">Sending... <span id="uploadPercent">0%</span></div>
         </form>
       </aside>
     </section>
@@ -81,16 +94,7 @@
       </div>
     </section>
 
-    <section id="gallery">
-      <h2>Standard Prints</h2>
-      <p class="note">Our own print bundles you might like — from us</p>
-      <div class="gallery">
-        <div class="photo">1st Product</div>
-        <div class="photo">2nd Product</div>
-        <div class="photo">3rd Product</div>
-        <div class="photo">4th Product</div>
-      </div>
-    </section>
+    <!-- removed Standard Prints bundle section (replaced by Products page link) -->
 
     <section id="pricing" class="split">
       <div>
@@ -124,7 +128,7 @@
             <div class="num">4</div>
             <div>
               <strong>Deliver or pickup</strong>
-              <div class="small">Local pickup local delivery</div>
+              <div class="small">Local pickup or delivery.</div>
             </div>
           </div>
         </div>
@@ -135,20 +139,20 @@
         <div class="pricing">
           <div class="price card">
             <h4>Small</h4>
-            <div class="small">Change ts to smth proper</div>
+            <div class="small">Starter prints & prototypes</div>
             <div class="small">Volume-based discounts available.</div>
             <a class="cta topmargin" href="#get-quote">Estimate</a>
           </div>
 
           <div class="price card">
             <h4>Medium</h4>
-            <div class="small">Change ts to smth proper</div>
+            <div class="small">Small-batch production</div>
             <a class="cta topmargin" href="#get-quote">Estimate</a>
           </div>
 
           <div class="price card">
             <h4>Big</h4>
-            <div class="small">Change ts to smth proper</div>
+            <div class="small">Larger runs & assemblies</div>
             <a class="cta topmargin" href="#get-quote">Estimate</a>
           </div>
         </div>
@@ -162,9 +166,9 @@
 
     <section class="faq">
       <h2>FAQ</h2>
-      <details><summary>What file types do you accept?</summary><div class="small">idk mason u do dis</div></details>
-      <details><summary>How will you deliver it</summary><div class="small">You can either pick it up, or we can deliver it locally for a fee.</div></details>
-      <details><summary>Do you offer design help?</summary><div class="small">Yes — or smth idk</div></details>
+      <details><summary>What file types do you accept?</summary><div class="small">We accept .stl, .obj, .3mf, STEP/IGES for assemblies.</div></details>
+      <details><summary>How will you deliver it</summary><div class="small">Pick up or local delivery; we can also ship nationwide at cost.</div></details>
+      <details><summary>Do you offer design help?</summary><div class="small">Yes — CAD tweaks and design-for-manufacturability (DFM) available.</div></details>
     </section>
 
     <section id="contact" class="contact">
@@ -178,11 +182,11 @@
       <aside class="card">
         <h3>Send a message</h3>
         <form id="contactForm" class="fieldset">
-          <input id="name" name="name" placeholder="Your name" required />
-          <input id="contactEmail" name="email" type="email" placeholder="you@example.com" required />
+          <input id="name" name="from_name" placeholder="Your name" required />
+          <input id="contactEmail" name="reply_to" type="email" placeholder="you@example.com" required />
           <input id="subject" name="subject" placeholder="Subject (e.g. Quote for 3 parts)" />
           <textarea id="message" name="message" rows="5" placeholder="Give a short description: material, color, finish, quantity"></textarea>
-          <button class="cta">Send</button>
+          <button class="cta" id="contactSubmit" type="submit">Send</button>
         </form>
       </aside>
     </section>
@@ -196,6 +200,9 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- EMAILJS SDK -->
+  <script src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
+  <!-- site script -->
+  <script src="site-script.js"></script>
 </body>
 </html>
