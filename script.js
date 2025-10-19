@@ -1,4 +1,4 @@
-/* Mania Print — script.js
+/* Maniaa Print — script.js
    Frontend handlers and upload stubs. Wire to your backend endpoints:
    - POST /upload  (multipart/form-data) -> fields: email, material, file
    - POST /quote   (application/json) -> { name, email, subject, message }
