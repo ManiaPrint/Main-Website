@@ -27,7 +27,7 @@
       <div style="display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
         <div>
           <h1>Products</h1>
-          <p class="small">Standard parts, bundles and starter kits you can order straight away. Filter by category, search by name or material.</p>
+          <p class="small">Standard PLA prints, bundles and starter kits you can order straight away. Filter by type, search by name or details.</p>
         </div>
         <div style="display:flex; gap:10px; align-items:center;">
           <a class="btn primary" href="../index.html">Back to Home</a>
@@ -40,7 +40,7 @@
             <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
           </svg>
-          <input id="q" placeholder="Search products by name, description or material" />
+          <input id="q" placeholder="Search products by name, size or color" />
         </div>
 
         <select id="sort" class="hidden">
@@ -85,7 +85,7 @@
     const sortOpts = document.querySelector('.custom-select-options');
 
     let products = [];
-    let activeCategory = null;
+    let activeType = null;
 
     async function fetchProducts(){
       const r = await fetch('products.json', {cache:'no-store'});
@@ -98,15 +98,15 @@
       return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;"); 
     }
 
-    function makeIcon(title, category){
+    function makeIcon(title, type){
       const initial = title && title[0] ? title[0].toUpperCase() : '?';
       const colors = {
-        'PLA': 'background: linear-gradient(180deg, rgba(91,224,192,0.12), rgba(107,140,255,0.04));',
-        'PETG': 'background: linear-gradient(180deg, rgba(107,140,255,0.12), rgba(91,224,192,0.04));',
-        'Resin': 'background: linear-gradient(180deg, rgba(255,107,140,0.12), rgba(255,224,91,0.04));',
-        'Bundle': 'background: linear-gradient(180deg, rgba(224,91,255,0.12), rgba(140,107,255,0.04));'
+        'Standard': 'background: linear-gradient(180deg, rgba(91,224,192,0.12), rgba(107,140,255,0.04));',
+        'Premium': 'background: linear-gradient(180deg, rgba(107,140,255,0.12), rgba(91,224,192,0.04));',
+        'Bundle': 'background: linear-gradient(180deg, rgba(224,91,255,0.12), rgba(140,107,255,0.04));',
+        'Custom': 'background: linear-gradient(180deg, rgba(255,224,91,0.12), rgba(255,107,140,0.04));'
       };
-      const color = colors[category] || 'background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));';
+      const color = colors[type] || 'background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));';
       return `<div class="icon" style="${color}">${initial}</div>`;
     }
 
@@ -118,10 +118,10 @@
       if(item.image) {
         iconHtml = `<div class="icon"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" style="width:100%; height:100%; object-fit:cover;"></div>`;
       } else {
-        iconHtml = makeIcon(item.title, item.category);
+        iconHtml = makeIcon(item.title, item.type);
       }
 
-      return `<article class="tool-card" data-title="${escapeHtml(item.title)}" data-desc="${escapeHtml(item.description || '')}" data-category="${escapeHtml(item.category || '')}" data-tags="${escapeHtml((item.tags || []).join(','))}">
+      return `<article class="tool-card" data-title="${escapeHtml(item.title)}" data-desc="${escapeHtml(item.description || '')}" data-type="${escapeHtml(item.type || '')}" data-tags="${escapeHtml((item.tags || []).join(','))}">
         <div class="card-top">
           ${iconHtml}
           <div style="min-width:0;flex:1;">
@@ -149,33 +149,33 @@
       attachDetailHandlers();
     }
 
-    function gatherCategories(list){
+    function gatherTypes(list){
       const s = new Set();
       list.forEach(it => {
-        if(it.category) s.add(it.category);
+        if(it.type) s.add(it.type);
       });
       return Array.from(s).sort();
     }
 
-    function buildChips(allCategories){
+    function buildChips(allTypes){
       chips.innerHTML = '';
 
       const btnAll = document.createElement('button');
-      btnAll.className = 'chip' + (activeCategory === null ? ' active' : '');
+      btnAll.className = 'chip' + (activeType === null ? ' active' : '');
       btnAll.textContent = 'All';
       btnAll.addEventListener('click', ()=>{ 
-        activeCategory = null; 
+        activeType = null; 
         applyFilters(); 
         updateChips(); 
       });
       chips.appendChild(btnAll);
 
-      allCategories.forEach(cat=>{
+      allTypes.forEach(type=>{
         const b = document.createElement('button');
-        b.className = 'chip' + (activeCategory === cat ? ' active' : '');
-        b.textContent = cat;
+        b.className = 'chip' + (activeType === type ? ' active' : '');
+        b.textContent = type;
         b.addEventListener('click', ()=> {
-          activeCategory = (activeCategory === cat) ? null : cat;
+          activeType = (activeType === type) ? null : type;
           applyFilters();
           updateChips();
         });
@@ -187,8 +187,8 @@
       document.querySelectorAll('.chip').forEach(el => {
         el.classList.remove('active');
         if (
-          (activeCategory === null && el.textContent === 'All') || 
-          (activeCategory !== null && el.textContent === activeCategory)
+          (activeType === null && el.textContent === 'All') || 
+          (activeType !== null && el.textContent === activeType)
         ) {
           el.classList.add('active');
         }
@@ -199,8 +199,8 @@
       const qv = (q.value || '').trim().toLowerCase();
       let filtered = products.slice();
 
-      if (activeCategory) {
-        filtered = filtered.filter(it => it.category === activeCategory);
+      if (activeType) {
+        filtered = filtered.filter(it => it.type === activeType);
       }
 
       if (qv) {
@@ -238,7 +238,7 @@
             <h2 style="margin:0 0 12px 0;">${escapeHtml(p.title)}</h2>
             <p style="color:var(--muted); margin:0 0 12px 0;">${escapeHtml(p.description||'')}</p>
             <div style="margin-bottom:12px;">${tagsHtml}</div>
-            <p style="margin:0;"><strong>Category:</strong> ${escapeHtml(p.category||'N/A')}</p>
+            <p style="margin:0;"><strong>Type:</strong> ${escapeHtml(p.type||'N/A')}</p>
             <p style="margin:8px 0 0 0;"><strong>Price:</strong> <span style="color:var(--accent); font-weight:800;">${priceDisplay}</span></p>
             ${p.details ? `<p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">${escapeHtml(p.details)}</p>` : ''}
           `);
@@ -264,8 +264,8 @@
       try {
         const raw = await fetchProducts();
         products = raw;
-        const categories = gatherCategories(products);
-        buildChips(categories);
+        const types = gatherTypes(products);
+        buildChips(types);
         applyFilters();
       } catch (err){
         grid.innerHTML = `<div style="color:var(--muted); padding:18px;">Failed to load products. Make sure products.json exists in /products/ folder.<br><small>${escapeHtml(String(err))}</small></div>`;
