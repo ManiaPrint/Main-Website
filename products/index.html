@@ -16,12 +16,9 @@
         <a href="../index.html#gallery">Gallery</a>
         <a href="../index.html#pricing">Pricing</a>
         <a href="../index.html#contact">Contact</a>
-        <a href="../products/index.html">Products</a>
+        <a href="index.html" class="nav">Products</a>
       </nav>
-
-      <div style="display:flex; gap:8px; align-items:center;">
-        <a class="cta" href="../index.html">Back to Home</a>
-      </div>
+      <a class="cta" href="../index.html#contact">Get a Quote</a>
     </div>
   </header>
 
@@ -30,7 +27,11 @@
       <div style="display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
         <div>
           <h1>Products</h1>
-          <p class="small">Standard parts, bundles and starter kits you can order straight away. This page loads from <code>products.json</code> so you can update offerings easily.</p>
+          <p class="small">Standard parts, bundles and starter kits you can order straight away. Filter by category, search, and reach out for custom variations.</p>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="cta" href="../index.html">Back to Home</a>
         </div>
       </div>
 
@@ -40,94 +41,188 @@
             <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
           </svg>
-          <input id="q" placeholder="Search title, desc or tag" />
+          <input id="q" placeholder="Search products by name, description or material" />
         </div>
 
+        <select id="sort" class="hidden">
+          <option value="alpha">Name (A → Z)</option>
+          <option value="alpha-desc">Name (Z → A)</option>
+          <option value="price-asc">Price (low → high)</option>
+          <option value="price-desc">Price (high → low)</option>
+        </select>
+
         <div id="sort-dropdown" class="custom-select">
-          <button class="custom-select-button">Title (A → Z) ▾</button>
+          <button class="custom-select-button">Name (A → Z) ▾</button>
           <div class="custom-select-options hidden">
-            <div class="custom-select-option" data-value="alpha">Title (A → Z)</div>
-            <div class="custom-select-option" data-value="alpha-desc">Title (Z → A)</div>
+            <div class="custom-select-option" data-value="alpha">Name (A → Z)</div>
+            <div class="custom-select-option" data-value="alpha-desc">Name (Z → A)</div>
             <div class="custom-select-option" data-value="price-asc">Price (low → high)</div>
             <div class="custom-select-option" data-value="price-desc">Price (high → low)</div>
           </div>
         </div>
       </div>
+
+      <div class="chips" id="chips"></div>
     </section>
 
-    <div id="grid" class="cards-grid" aria-live="polite" style="margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px;"></div>
-    <div id="empty" class="small" style="margin-top:40px; display:none;">No products found.</div>
+    <div id="grid" class="cards-grid" aria-live="polite"></div>
+    <div id="empty" class="small" style="margin-top:40px; display:none;">No products match your search.</div>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <small>© Mania Print — built for fun. Hosted wherever you like.</small>
+      <small>© Mania Print — made with filament & cookies 🍪</small>
     </div>
   </footer>
 
   <script>
   (function(){
     const grid = document.getElementById('grid');
+    const chips = document.getElementById('chips');
     const q = document.getElementById('q');
+    const sort = document.getElementById('sort');
     const empty = document.getElementById('empty');
+    const sortBtn = document.querySelector('.custom-select-button');
+    const sortOpts = document.querySelector('.custom-select-options');
 
     let products = [];
-    let sortMode = 'alpha';
+    let activeCategory = null;
 
-    function escapeHtml(s){ if(!s && s !== 0) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;"); }
+    async function fetchProducts(){
+      const r = await fetch('products.json', {cache:'no-store'});
+      if (!r.ok) throw new Error('products.json not found');
+      return await r.json();
+    }
 
-    function renderCard(p){
-      const price = (typeof p.price === 'number') ? ('$' + p.price.toFixed(2)) : (p.price || '');
-      const tags = (p.tags || []).map(t => `<span class="chip">${escapeHtml(t)}</span>`).join(' ');
-      return `<article class="tool-card">
-        <div class="card-top" style="display:flex;gap:12px;align-items:flex-start">
-          <div style="width:64px;height:64px;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center">
-            ${p.img ? `<img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.title)}" style="max-width:100%;max-height:100%;border-radius:6px">` : `<div style="font-weight:800">${escapeHtml((p.title||'')[0]||'?')}</div>`}
-          </div>
-          <div style="flex:1;min-width:0;">
-            <h3 style="margin:0 0 6px 0;">${escapeHtml(p.title)}</h3>
-            <p class="card-desc">${escapeHtml(p.desc || '')}</p>
-            <div style="margin-top:8px">${tags}</div>
+    function escapeHtml(s){ 
+      if(!s && s !== 0) return ''; 
+      return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;"); 
+    }
+
+    function makeIcon(title, category){
+      const initial = title && title[0] ? title[0].toUpperCase() : '?';
+      const colors = {
+        'PLA': 'background: linear-gradient(180deg, rgba(91,224,192,0.12), rgba(107,140,255,0.04));',
+        'PETG': 'background: linear-gradient(180deg, rgba(107,140,255,0.12), rgba(91,224,192,0.04));',
+        'Resin': 'background: linear-gradient(180deg, rgba(255,107,140,0.12), rgba(255,224,91,0.04));',
+        'Bundle': 'background: linear-gradient(180deg, rgba(224,91,255,0.12), rgba(140,107,255,0.04));'
+      };
+      const color = colors[category] || 'background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));';
+      return `<div class="icon" style="${color}; width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem;">${initial}</div>`;
+    }
+
+    function renderCard(item) {
+      const priceDisplay = (typeof item.price === 'number') ? `$${item.price.toFixed(2)}` : (item.price || 'Quote');
+      const tagsHtml = (item.tags || []).map(t => `<span class="chip" style="font-size:0.75rem; padding:4px 8px; background:rgba(255,255,255,0.04); border-radius:6px; display:inline-block;">${escapeHtml(t)}</span>`).join(' ');
+      
+      let iconHtml = '';
+      if(item.image) {
+        iconHtml = `<div class="icon" style="width:48px; height:48px; border-radius:12px; overflow:hidden;"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+      } else {
+        iconHtml = makeIcon(item.title, item.category);
+      }
+
+      return `<article class="tool-card" data-title="${escapeHtml(item.title)}" data-desc="${escapeHtml(item.description || '')}" data-category="${escapeHtml(item.category || '')}" data-tags="${escapeHtml((item.tags || []).join(','))}">
+        <div class="card-top">
+          ${iconHtml}
+          <div style="min-width:0;flex:1;">
+            <h3 style="margin:0 0 6px 0;">${escapeHtml(item.title)}</h3>
+            <p class="card-desc">${escapeHtml(item.description || '')}</p>
+            <div class="card-tags" style="margin-top:8px;">${tagsHtml}</div>
           </div>
         </div>
-        <div class="card-actions" style="display:flex;gap:8px;align-items:center;margin-top:12px;">
-          <a class="btn small primary" href="../index.html#contact" onclick="location.href='../index.html#contact'">Order</a>
-          <button class="btn small ghost view-details" data-id="${escapeHtml(p.id || '')}">Details</button>
-          <div style="margin-left:auto;font-weight:800">${price}</div>
+        <div class="card-actions" style="margin-top:12px;">
+          <a class="btn small primary" href="../index.html#contact">Order</a>
+          <button class="btn small ghost view-details" data-id="${escapeHtml(item.id || '')}">Details</button>
+          <div style="margin-left:auto; font-weight:800; color:var(--accent);">${priceDisplay}</div>
         </div>
       </article>`;
     }
 
-    async function loadProducts(){
-      try {
-        const r = await fetch('products.json', {cache:'no-cache'});
-        if (!r.ok) throw new Error('products.json not found');
-        const raw = await r.json();
-        products = raw;
-        applyFilters();
-      } catch (err){
-        console.error(err);
-        grid.innerHTML = `<div style="color:var(--muted); padding:18px;">Failed to load products. Drop a products.json in site root.</div>`;
+    function renderList(list){
+      if (!list || list.length === 0) {
+        grid.innerHTML = ''; 
+        empty.style.display = 'block'; 
+        return;
       }
+      empty.style.display = 'none';
+      grid.innerHTML = list.map(renderCard).join('');
+      attachDetailHandlers();
+    }
+
+    function gatherCategories(list){
+      const s = new Set();
+      list.forEach(it => {
+        if(it.category) s.add(it.category);
+      });
+      return Array.from(s).sort();
+    }
+
+    function buildChips(allCategories){
+      chips.innerHTML = '';
+
+      const btnAll = document.createElement('button');
+      btnAll.className = 'chip' + (activeCategory === null ? ' active' : '');
+      btnAll.textContent = 'All';
+      btnAll.addEventListener('click', ()=>{ 
+        activeCategory = null; 
+        applyFilters(); 
+        updateChips(); 
+      });
+      chips.appendChild(btnAll);
+
+      allCategories.forEach(cat=>{
+        const b = document.createElement('button');
+        b.className = 'chip' + (activeCategory === cat ? ' active' : '');
+        b.textContent = cat;
+        b.addEventListener('click', ()=> {
+          activeCategory = (activeCategory === cat) ? null : cat;
+          applyFilters();
+          updateChips();
+        });
+        chips.appendChild(b);
+      });
+    }
+
+    function updateChips(){
+      document.querySelectorAll('.chip').forEach(el => {
+        el.classList.remove('active');
+        if (
+          (activeCategory === null && el.textContent === 'All') || 
+          (activeCategory !== null && el.textContent === activeCategory)
+        ) {
+          el.classList.add('active');
+        }
+      });
     }
 
     function applyFilters(){
       const qv = (q.value || '').trim().toLowerCase();
-      let fl = products.slice();
+      let filtered = products.slice();
 
-      if (qv) {
-        fl = fl.filter(p => ((p.title||'') + ' ' + (p.desc||'') + ' ' + (p.tags||[]).join(' ')).toLowerCase().includes(qv));
+      if (activeCategory) {
+        filtered = filtered.filter(it => it.category === activeCategory);
       }
 
-      if (sortMode === 'alpha') fl.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
-      else if (sortMode === 'alpha-desc') fl.sort((a,b)=> (b.title||'').localeCompare(a.title||''));
-      else if (sortMode === 'price-asc') fl.sort((a,b)=> (a.price||0) - (b.price||0));
-      else if (sortMode === 'price-desc') fl.sort((a,b)=> (b.price||0) - (a.price||0));
+      if (qv) {
+        filtered = filtered.filter(it => (
+          ((it.title||'') + ' ' + (it.description||'') + ' ' + (it.tags||[]).join(' '))
+            .toLowerCase()
+            .includes(qv)
+        ));
+      }
 
-      if (!fl.length){ grid.innerHTML=''; empty.style.display='block'; return; }
-      empty.style.display='none';
-      grid.innerHTML = fl.map(renderCard).join('');
-      attachDetailHandlers();
+      if (sort.value === 'alpha') {
+        filtered.sort((a,b)=>a.title.localeCompare(b.title));
+      } else if (sort.value === 'alpha-desc') {
+        filtered.sort((a,b)=>b.title.localeCompare(a.title));
+      } else if (sort.value === 'price-asc') {
+        filtered.sort((a,b)=> (a.price||0) - (b.price||0));
+      } else if (sort.value === 'price-desc') {
+        filtered.sort((a,b)=> (b.price||0) - (a.price||0));
+      }
+
+      renderList(filtered);
     }
 
     function attachDetailHandlers(){
@@ -135,50 +230,72 @@
         btn.addEventListener('click', (e)=>{
           const id = e.currentTarget.getAttribute('data-id');
           const p = products.find(x => String(x.id) === String(id));
-          if (!p) return showModal('Not found');
-          showModal(`<strong>${escapeHtml(p.title)}</strong><p>${escapeHtml(p.desc||'')}</p><p><strong>Price:</strong> ${p.price ? '$'+p.price.toFixed(2) : 'Contact'}</p>`);
+          if (!p) return showModal('Product not found');
+          
+          const tagsHtml = (p.tags || []).map(t => `<span style="background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px; font-size:0.85rem; display:inline-block; margin-right:6px;">${escapeHtml(t)}</span>`).join('');
+          const priceDisplay = (typeof p.price === 'number') ? `$${p.price.toFixed(2)}` : (p.price || 'Contact for quote');
+          
+          showModal(`
+            <h2 style="margin:0 0 12px 0;">${escapeHtml(p.title)}</h2>
+            <p style="color:var(--muted); margin:0 0 12px 0;">${escapeHtml(p.description||'')}</p>
+            <div style="margin-bottom:12px;">${tagsHtml}</div>
+            <p style="margin:0;"><strong>Category:</strong> ${escapeHtml(p.category||'N/A')}</p>
+            <p style="margin:8px 0 0 0;"><strong>Price:</strong> <span style="color:var(--accent); font-weight:800;">${priceDisplay}</span></p>
+            ${p.details ? `<p style="margin-top:12px; color:var(--muted); font-size:0.9rem;">${escapeHtml(p.details)}</p>` : ''}
+          `);
         });
       });
     }
 
-    // tiny modal
     function showModal(html){
       let m = document.getElementById('simple-modal');
       if (!m) {
         m = document.createElement('div');
         m.id = 'simple-modal';
-        m.style.position='fixed';
-        m.style.left=0; m.style.top=0; m.style.right=0; m.style.bottom=0;
-        m.style.display='flex'; m.style.alignItems='center'; m.style.justifyContent='center';
-        m.style.background='rgba(0,0,0,0.6)';
-        m.innerHTML = `<div style="max-width:680px;background:var(--panel);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)"><div id="simple-modal-content"></div><div style="text-align:right;margin-top:12px"><button id="closeModal" class="btn">Close</button></div></div>`;
+        m.style.cssText = 'position:fixed; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); z-index:9999; padding:20px;';
+        m.innerHTML = `<div style="max-width:600px; width:100%; background:var(--panel); padding:24px; border-radius:16px; border:1px solid rgba(255,255,255,0.06); box-shadow:0 8px 32px rgba(0,0,0,0.4);"><div id="simple-modal-content"></div><div style="text-align:right; margin-top:18px;"><button id="closeModal" class="cta ghost">Close</button></div></div>`;
         document.body.appendChild(m);
         document.getElementById('closeModal').addEventListener('click', ()=>m.remove());
+        m.addEventListener('click', (e)=>{ if(e.target === m) m.remove(); });
       }
       document.getElementById('simple-modal-content').innerHTML = html;
     }
 
-    // sort dropdown basic
-    const selBtn = document.querySelector('.custom-select-button');
-    const opts = document.querySelectorAll('.custom-select-option');
-    if (selBtn){
-      selBtn.addEventListener('click', ()=> {
-        const el = document.querySelector('.custom-select-options');
-        el.classList.toggle('hidden');
-      });
-      opts.forEach(o=>{
+    async function loadAll(){
+      try {
+        const raw = await fetchProducts();
+        products = raw;
+        const categories = gatherCategories(products);
+        buildChips(categories);
+        applyFilters();
+      } catch (err){
+        grid.innerHTML = `<div style="color:var(--muted); padding:18px;">Failed to load products. Make sure products.json exists in /products/ folder.<br><small>${escapeHtml(String(err))}</small></div>`;
+        empty.style.display='none';
+        console.error(err);
+      }
+    }
+
+    // Custom dropdown
+    if(sortBtn){
+      sortBtn.addEventListener('click', ()=> sortOpts.classList.toggle('hidden'));
+      document.querySelectorAll('.custom-select-option').forEach(o=>{
         o.addEventListener('click', ()=>{
-          sortMode = o.getAttribute('data-value');
-          document.querySelector('.custom-select-button').textContent = o.textContent + ' ▾';
-          document.querySelector('.custom-select-options').classList.add('hidden');
+          sort.value = o.getAttribute('data-value');
+          sortBtn.textContent = o.textContent + ' ▾';
+          sortOpts.classList.add('hidden');
           applyFilters();
         });
       });
     }
 
-    q.addEventListener('input', ()=> setTimeout(applyFilters, 200));
+    let debounce;
+    q.addEventListener('input', ()=>{ 
+      clearTimeout(debounce); 
+      debounce = setTimeout(applyFilters, 200);
+    });
+    sort.addEventListener('change', applyFilters);
 
-    loadProducts();
+    loadAll();
   })();
   </script>
 </body>

@@ -1,26 +1,42 @@
 [
   {
-    "id": "prod-001",
-    "title": "Miniature Hero (Resin)",
-    "desc": "High-detail 75mm resin miniature, primed and ready for painting.",
-    "price": 45.00,
-    "tags": ["resin","miniature","paint-ready"],
-    "img": "images/mini-hero.jpg"
+    "id": "pla-prototype-001",
+    "title": "PLA Prototype Kit",
+    "description": "Fast-turn prototypes in standard PLA, perfect for testing fit and form",
+    "category": "PLA",
+    "price": 15.00,
+    "tags": ["Prototype", "Fast", "Eco-friendly"],
+    "image": "",
+    "details": "Includes 3 iterations with design feedback. Typical 24-48hr turnaround."
   },
   {
-    "id": "prod-002",
-    "title": "Custom Bracket (PLA)",
-    "desc": "Small functional PLA bracket printed with reinforced infill. Mounting holes included.",
-    "price": 12.50,
-    "tags": ["PLA","functional","bracket"],
-    "img": "images/bracket.jpg"
+    "id": "resin-mini-001",
+    "title": "High-Detail Miniature",
+    "description": "Cast-quality resin print with ultra-fine details for tabletop gaming",
+    "category": "Resin",
+    "price": 25.00,
+    "tags": ["Gaming", "High-detail", "Smooth"],
+    "image": "",
+    "details": "0.025mm layer height. Post-cured and washed. Ready to prime and paint."
   },
   {
-    "id": "prod-003",
-    "title": "Replacement Gear (PETG)",
-    "desc": "Durable PETG gear for small mechanisms. Specify teeth count in order notes.",
-    "price": 8.00,
-    "tags": ["PETG","functional","gear"],
-    "img": "images/gear.jpg"
+    "id": "petg-functional-001",
+    "title": "PETG Functional Part",
+    "description": "Engineering-grade PETG for load-bearing and outdoor applications",
+    "category": "PETG",
+    "price": 30.00,
+    "tags": ["Durable", "Weather-resistant", "Functional"],
+    "image": "",
+    "details": "UV and moisture resistant. Suitable for mechanical assemblies."
+  },
+  {
+    "id": "bundle-starter-001",
+    "title": "Starter Bundle - 5 Parts",
+    "description": "Mix of PLA parts for designers testing multiple concepts",
+    "category": "Bundle",
+    "price": 60.00,
+    "tags": ["Bundle", "Value", "Mixed"],
+    "image": "",
+    "details": "Save 20% on bulk orders. Choose your materials at checkout."
   }
 ]
