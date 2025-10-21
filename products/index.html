@@ -16,7 +16,7 @@
         <a href="../index.html#gallery">Gallery</a>
         <a href="../index.html#pricing">Pricing</a>
         <a href="../index.html#contact">Contact</a>
-        <a href="index.html" class="nav">Products</a>
+        <a href="index.html" class="nav-active">Products</a>
       </nav>
       <a class="cta" href="../index.html#contact">Get a Quote</a>
     </div>
@@ -27,11 +27,10 @@
       <div style="display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
         <div>
           <h1>Products</h1>
-          <p class="small">Standard parts, bundles and starter kits you can order straight away. Filter by category, search, and reach out for custom variations.</p>
+          <p class="small">Standard parts, bundles and starter kits you can order straight away. Filter by category, search by name or material.</p>
         </div>
-
         <div style="display:flex; gap:10px; align-items:center;">
-          <a class="cta" href="../index.html">Back to Home</a>
+          <a class="btn primary" href="../index.html">Back to Home</a>
         </div>
       </div>
 
@@ -108,7 +107,7 @@
         'Bundle': 'background: linear-gradient(180deg, rgba(224,91,255,0.12), rgba(140,107,255,0.04));'
       };
       const color = colors[category] || 'background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));';
-      return `<div class="icon" style="${color}; width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem;">${initial}</div>`;
+      return `<div class="icon" style="${color}">${initial}</div>`;
     }
 
     function renderCard(item) {
@@ -117,7 +116,7 @@
       
       let iconHtml = '';
       if(item.image) {
-        iconHtml = `<div class="icon" style="width:48px; height:48px; border-radius:12px; overflow:hidden;"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" style="width:100%; height:100%; object-fit:cover;"></div>`;
+        iconHtml = `<div class="icon"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" style="width:100%; height:100%; object-fit:cover;"></div>`;
       } else {
         iconHtml = makeIcon(item.title, item.category);
       }
@@ -253,7 +252,7 @@
         m = document.createElement('div');
         m.id = 'simple-modal';
         m.style.cssText = 'position:fixed; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.7); z-index:9999; padding:20px;';
-        m.innerHTML = `<div style="max-width:600px; width:100%; background:var(--panel); padding:24px; border-radius:16px; border:1px solid rgba(255,255,255,0.06); box-shadow:0 8px 32px rgba(0,0,0,0.4);"><div id="simple-modal-content"></div><div style="text-align:right; margin-top:18px;"><button id="closeModal" class="cta ghost">Close</button></div></div>`;
+        m.innerHTML = `<div style="max-width:600px; width:100%; background:var(--panel); padding:24px; border-radius:16px; border:1px solid rgba(255,255,255,0.06); box-shadow:0 8px 32px rgba(0,0,0,0.4);"><div id="simple-modal-content"></div><div style="text-align:right; margin-top:18px;"><button id="closeModal" class="btn ghost">Close</button></div></div>`;
         document.body.appendChild(m);
         document.getElementById('closeModal').addEventListener('click', ()=>m.remove());
         m.addEventListener('click', (e)=>{ if(e.target === m) m.remove(); });
