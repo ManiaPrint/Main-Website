@@ -1,3 +1,5 @@
+// Main
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -52,12 +54,17 @@
           <input id="uploadEmail" name="email" type="email" placeholder="you@example.com" required />
 
           <label class="note">Material</label>
-          <select id="uploadMaterial" name="material" required>
+          <select id="uploadMaterial" name="material" required class="hidden">
             <option value="PLA">PLA</option>
-            <option value="PETG">PETG</option>
-            <option value="ABS">ABS</option>
-            <option value="Resin">Resin</option>
           </select>
+          
+          <div id="material-dropdown" class="custom-select">
+            <button type="button" class="custom-select-button">PLA ▾</button>
+            <div class="custom-select-options hidden">
+              <div class="custom-select-option" data-value="PLA">PLA</div>
+              <div class="custom-select-option disabled" data-value="">More Coming Soon!</div>
+            </div>
+          </div>
 
           <label class="note">Upload file</label>
           <input id="uploadFile" name="file" type="file" accept=".stl,.obj,.step,.stp,.3mf" />
@@ -198,6 +205,64 @@
   </footer>
 
   <script>
+    // Navigation highlighting based on current page/section
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentPath = window.location.pathname;
+      const currentHash = window.location.hash;
+      const navLinks = document.querySelectorAll('.nav a');
+      
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        
+        // Check if we're on the main page with a hash
+        if (currentHash && href === currentHash) {
+          link.classList.add('nav-active');
+        }
+        // Check if we're on a different page
+        else if (href.includes('index.html') && !currentPath.includes('products')) {
+          // We're on the main page
+          if (!currentHash && (href === 'index.html' || href === '../index.html')) {
+            link.classList.add('nav-active');
+          }
+        }
+      });
+      
+      // Add click handlers to maintain active state
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.forEach(l => l.classList.remove('nav-active'));
+          link.classList.add('nav-active');
+        });
+      });
+    });
+
+    // Custom dropdown for material selection
+    const materialBtn = document.querySelector('#material-dropdown .custom-select-button');
+    const materialOpts = document.querySelector('#material-dropdown .custom-select-options');
+    const materialSelect = document.getElementById('uploadMaterial');
+
+    if (materialBtn) {
+      materialBtn.addEventListener('click', () => materialOpts.classList.toggle('hidden'));
+      
+      document.querySelectorAll('#material-dropdown .custom-select-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          if (opt.classList.contains('disabled')) return;
+          
+          const value = opt.getAttribute('data-value');
+          materialSelect.value = value;
+          materialBtn.textContent = opt.textContent.replace('More Coming Soon!', 'PLA') + ' ▾';
+          materialOpts.classList.add('hidden');
+        });
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#material-dropdown')) {
+          materialOpts.classList.add('hidden');
+        }
+      });
+    }
+
     // GetForm integration for both forms
     const uploadForm = document.getElementById('uploadForm');
     const contactForm = document.getElementById('contactForm');
