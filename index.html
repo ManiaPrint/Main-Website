@@ -3,93 +3,278 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mania Print</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Mania Print — 3D Printing Studio</title>
+  <meta name="description" content="Mania Print — professional 3D printing services: prototyping, small-batch production, repairs, finishing and custom design." />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
-    <h1 class="logo">Mania Print</h1>
-    <p class="tagline">3D printing service — send your request below</p>
+    <div class="container">
+      <a class="logo" href="index.html">Mania Print</a>
+      <nav class="nav" id="nav">
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <a href="products/index.html" class="nav">Products</a>
+      </nav>
+      <a class="cta" href="#get-quote">Get a Quote</a>
+    </div>
   </header>
 
-  <main class="content">
-    <!-- Quick order / file upload form -->
-    <section class="card">
-      <h2>Send a print request</h2>
-      <form id="uploadForm"
-            class="fieldset"
-            action="https://formspree.io/f/mjkadark"
-            method="POST"
-            enctype="multipart/form-data"
-            novalidate>
-        <!-- If you want Formspree to redirect to a thank-you page after submit, uncomment and set _next -->
-        <!-- <input type="hidden" name="_next" value="https://yourdomain.com/thanks.html" /> -->
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Mania Print — 3D printing that turns imagination to reality</h1>
+        <p class="lead">Fast prototyping, high-detail miniatures, functional parts and small-batch production. We handle design checks, print, post-processing and finishing — so you get parts that actually work.</p>
 
-        <label for="uploadEmail" class="note">Your email</label>
-        <input id="uploadEmail" name="email" type="email" placeholder="you@example.com" required />
+        <div class="kpis">
+          <div class="kpi card"><b>48h</b><span class="small">Typical prototype turnaround</span></div>
+          <div class="kpi card"><b>Infinite</b><span class="small">Possible designs and prints</span></div>
+          <div class="kpi card"><b>99%</b><span class="small">First-print success</span></div>
+        </div>
 
-        <label for="uploadName" class="note">Name (optional)</label>
-        <input id="uploadName" name="name" type="text" placeholder="Full name" />
+        <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap">
+          <a class="cta" href="#get-quote">Request a quote</a>
+          <a class="cta ghost" href="products/index.html">Products</a>
+        </div>
+      </div>
 
-        <label for="uploadMaterial" class="note">Material</label>
-        <select id="uploadMaterial" name="material" required>
-          <option value="PLA">PLA</option>
-          <option value="ABS">ABS</option>
-          <option value="PETG">PETG</option>
-          <option value="TPU">TPU</option>
-          <option value="Resin">Resin</option>
-        </select>
+      <aside class="card">
+        <h3>Quick order</h3>
+        <p class="note">Upload a file and we'll respond with a printability check & estimate. No account required.</p>
 
-        <label for="uploadQuantity" class="note">Quantity</label>
-        <input id="uploadQuantity" name="quantity" type="number" min="1" value="1" required />
+        <form id="uploadForm" action="https://getform.io/f/YOUR_UPLOAD_FORM_ENDPOINT_HERE" method="POST" enctype="multipart/form-data" class="fieldset">
+          <label class="note">Your name</label>
+          <input id="uploadName" name="name" placeholder="Your name" required />
 
-        <label for="uploadNotes" class="note">Notes (colour, finish, tolerances)</label>
-        <textarea id="uploadNotes" name="notes" rows="4" placeholder="E.g. Red, smooth finish, tight tolerances"></textarea>
+          <label class="note">Your email</label>
+          <input id="uploadEmail" name="email" type="email" placeholder="you@example.com" required />
 
-        <label for="uploadFile" class="note">Upload file (stl, obj, zip)</label>
-        <input id="uploadFile" name="file" type="file" accept=".stl,.obj,.zip,.step,.stp" />
+          <label class="note">Material</label>
+          <select id="uploadMaterial" name="material" required>
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="ABS">ABS</option>
+            <option value="Resin">Resin</option>
+          </select>
 
-        <!-- optional subject override for Formspree inbox -->
-        <input type="hidden" name="_subject" value="Mania Print — New print request" />
+          <label class="note">Upload file</label>
+          <input id="uploadFile" name="file" type="file" accept=".stl,.obj,.step,.stp,.3mf" />
 
-        <button class="cta" type="submit">Send request</button>
-      </form>
+          <small class="note">Files are sent securely to our inbox.</small>
+          <button class="cta" id="uploadSubmit" type="submit">Send request</button>
 
-      <small class="note">
-        Files are attached to the form submission. Note: Formspree file-attachment handling may require a paid plan for large files.
-      </small>
+          <div id="uploadStatus" class="note" style="display:none;margin-top:8px"></div>
+        </form>
+      </aside>
     </section>
 
-    <!-- Contact / general message form -->
-    <section class="card">
-      <h2>Contact</h2>
-      <form id="contactForm"
-            class="fieldset"
-            action="https://formspree.io/f/mjkadark"
-            method="POST"
-            novalidate>
-        <!-- Use same Formspree form ID or create a separate form in Formspree and use that ID -->
-        <label for="contactName" class="note">Name</label>
-        <input id="contactName" name="name" type="text" placeholder="Your name" required />
-
-        <label for="contactEmail" class="note">Email</label>
-        <input id="contactEmail" name="email" type="email" placeholder="you@example.com" required />
-
-        <label for="contactSubject" class="note">Subject</label>
-        <input id="contactSubject" name="subject" type="text" placeholder="Quote request / General question" />
-
-        <label for="contactMessage" class="note">Message</label>
-        <textarea id="contactMessage" name="message" rows="6" placeholder="Describe what you need" required></textarea>
-
-        <input type="hidden" name="_subject" value="Mania Print — Contact form submission" />
-
-        <button class="cta" type="submit">Send</button>
-      </form>
+    <section id="services">
+      <h2>Services</h2>
+      <div class="services">
+        <div class="service card">
+          <h3>Rapid Prototyping</h3>
+          <p>Fast-turn, iterative printing for product development — low cost, high feedback speed.</p>
+        </div>
+        <div class="service card">
+          <h3>High-detail Resin</h3>
+          <p>Cast-quality miniatures, jewellery patterns and models with smooth surfaces and fine features.</p>
+        </div>
+        <div class="service card">
+          <h3>Functional Parts</h3>
+          <p>Load-bearing and fit-critical parts using engineering-grade materials and tuned print settings.</p>
+        </div>
+        <div class="service card">
+          <h3>Finishing & Assembly</h3>
+          <p>Sanding, priming, painting, solvent smoothing, epoxy coating and assembled sub-assemblies delivered ready to use.</p>
+        </div>
+      </div>
     </section>
+
+    <section id="pricing" class="split">
+      <div>
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="step card">
+            <div class="num">1</div>
+            <div>
+              <strong>Upload</strong>
+              <div class="small">Send file with instructions. We check printability in 24 hours.</div>
+            </div>
+          </div>
+
+          <div class="step card">
+            <div class="num">2</div>
+            <div>
+              <strong>Estimate</strong>
+              <div class="small">We quote material, time and finish options. You approve and pay.</div>
+            </div>
+          </div>
+
+          <div class="step card">
+            <div class="num">3</div>
+            <div>
+              <strong>Print & finish</strong>
+              <div class="small">We print, test-fit and apply requested post-processing.</div>
+            </div>
+          </div>
+
+          <div class="step card">
+            <div class="num">4</div>
+            <div>
+              <strong>Deliver or pickup</strong>
+              <div class="small">Local pickup or delivery.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <h2>Pricing (starter)</h2>
+        <div class="pricing">
+          <div class="price card">
+            <h4>Small</h4>
+            <div class="small">Starter prints & prototypes</div>
+            <div class="small">Volume-based discounts available.</div>
+            <a class="cta topmargin" href="#get-quote">Estimate</a>
+          </div>
+
+          <div class="price card">
+            <h4>Medium</h4>
+            <div class="small">Small-batch production</div>
+            <a class="cta topmargin" href="#get-quote">Estimate</a>
+          </div>
+
+          <div class="price card">
+            <h4>Big</h4>
+            <div class="small">Larger runs & assemblies</div>
+            <a class="cta topmargin" href="#get-quote">Estimate</a>
+          </div>
+        </div>
+
+        <div style="margin-top:12px" class="card">
+          <strong>Bulk & subscription</strong>
+          <p class="small">Repeat orders and monthly partner pricing for designers and small manufacturers. Contact us for SLAs.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details><summary>What file types do you accept?</summary><div class="small">We accept .stl, .obj, .3mf, STEP/IGES for assemblies.</div></details>
+      <details><summary>How will you deliver it</summary><div class="small">Pick up or local delivery; we can also ship nationwide at cost.</div></details>
+      <details><summary>Do you offer design help?</summary><div class="small">Yes — CAD tweaks and design-for-manufacturability (DFM) available.</div></details>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="card">
+        <h2>Contact & quote</h2>
+        <p class="note">Email mania_print@outlook.com or use the quick order above. For urgent jobs call +61 493 827 550</p>
+        <p class="note"><strong>Location:</strong> Brisbane, QLD — local pickup available.</p>
+        <p class="note">Follow us: Instagram @maniaprint | LinkedIn Mania Print</p>
+      </div>
+
+      <aside class="card">
+        <h3>Send a message</h3>
+        <form id="contactForm" action="https://getform.io/f/YOUR_CONTACT_FORM_ENDPOINT_HERE" method="POST" class="fieldset">
+          <input id="name" name="name" placeholder="Your name" required />
+          <input id="contactEmail" name="email" type="email" placeholder="you@example.com" required />
+          <input id="subject" name="subject" placeholder="Subject (e.g. Quote for 3 parts)" />
+          <textarea id="message" name="message" rows="5" placeholder="Give a short description: material, color, finish, quantity"></textarea>
+          <button class="cta" id="contactSubmit" type="submit">Send</button>
+          <div id="contactStatus" class="note" style="display:none;margin-top:8px"></div>
+        </form>
+      </aside>
+    </section>
+
   </main>
 
-  <footer class="site-footer">
-    <small>Mania Print — mania_print@outlook.com</small>
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div class="small">© Mania Print — made with filament & cookies 🍪</div>
+      <div class="small">Terms • Privacy</div>
+    </div>
   </footer>
+
+  <script>
+    // GetForm integration for both forms
+    const uploadForm = document.getElementById('uploadForm');
+    const contactForm = document.getElementById('contactForm');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const contactStatus = document.getElementById('contactStatus');
+
+    // Handle upload form submission
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = uploadForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      uploadStatus.style.display = 'block';
+      uploadStatus.textContent = 'Uploading your request...';
+
+      const formData = new FormData(uploadForm);
+
+      try {
+        const response = await fetch(uploadForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          uploadStatus.textContent = '✅ Request sent! We\'ll get back to you within 24 hours.';
+          uploadStatus.style.color = 'green';
+          uploadForm.reset();
+        } else {
+          throw new Error('Failed to send');
+        }
+      } catch (error) {
+        uploadStatus.textContent = '❌ Something went wrong. Try emailing us directly at mania_print@outlook.com';
+        uploadStatus.style.color = 'red';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send request';
+      }
+    });
+
+    // Handle contact form submission
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      contactStatus.style.display = 'block';
+      contactStatus.textContent = 'Sending your message...';
+
+      const formData = new FormData(contactForm);
+
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          contactStatus.textContent = '✅ Message sent! We\'ll reply ASAP.';
+          contactStatus.style.color = 'green';
+          contactForm.reset();
+        } else {
+          throw new Error('Failed to send');
+        }
+      } catch (error) {
+        contactStatus.textContent = '❌ Failed to send. Email us at mania_print@outlook.com instead.';
+        contactStatus.style.color = 'red';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send';
+      }
+    });
+  </script>
 </body>
 </html>
