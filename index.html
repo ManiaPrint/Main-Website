@@ -44,7 +44,7 @@
         <h3>Quick order</h3>
         <p class="note">Upload a file and we'll respond with a printability check & estimate. No account required.</p>
 
-        <form id="uploadForm" action="https://getform.io/f/YOUR_UPLOAD_FORM_ENDPOINT_HERE" method="POST" enctype="multipart/form-data" class="fieldset">
+        <form id="uploadForm" action="https://getform.io/f/bqoelodb" method="POST" enctype="multipart/form-data" class="fieldset">
           <label class="note">Your name</label>
           <input id="uploadName" name="name" placeholder="Your name" required />
 
@@ -177,7 +177,7 @@
 
       <aside class="card">
         <h3>Send a message</h3>
-        <form id="contactForm" action="https://getform.io/f/YOUR_CONTACT_FORM_ENDPOINT_HERE" method="POST" class="fieldset">
+        <form id="contactForm" action="https://getform.io/f/bqoelodb" method="POST" class="fieldset">
           <input id="name" name="name" placeholder="Your name" required />
           <input id="contactEmail" name="email" type="email" placeholder="you@example.com" required />
           <input id="subject" name="subject" placeholder="Subject (e.g. Quote for 3 parts)" />
@@ -205,15 +205,15 @@
     const contactStatus = document.getElementById('contactStatus');
     const uploadFile = document.getElementById('uploadFile');
 
-    // File size validation
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+    // File size validation (GetForm free = 5MB, paid = 25MB)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
 
     uploadFile.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file && file.size > MAX_FILE_SIZE) {
         uploadStatus.style.display = 'block';
         uploadStatus.style.color = 'red';
-        uploadStatus.textContent = `⚠️ File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Please email files over 10MB to mania_print@outlook.com`;
+        uploadStatus.textContent = `⚠️ File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Please email files over 5MB to mania_print@outlook.com`;
         uploadFile.value = '';
       } else {
         uploadStatus.style.display = 'none';
